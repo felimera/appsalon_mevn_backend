@@ -1,7 +1,10 @@
 import express from "express"; // ESM
+import dotenv from 'dotenv';
 import { db } from "./config/db.js";
 import servicesRoutes from "./routes/servicesRoutes.js";
 
+// Variables de entorno
+dotenv.config()
 // Configurar la app
 const app = express();
 // Conectando a BD
