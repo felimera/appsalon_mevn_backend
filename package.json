@@ -1,0 +1,11 @@
+{
+  "name": "appsalon_mevn_backend",
+  "version": "1.0.0",
+  "description": "Backend para AppSaon en MEVN",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andres Felipe Mera",
+  "license": "ISC"
+}
