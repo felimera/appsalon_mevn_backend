@@ -1,4 +1,14 @@
-const auth = true;
+const express = require("express");
 
-console.log("desde index.js");
-console.log(auth);
+// Configurar la app
+const app = express();
+// Definir una ruta
+app.get("/", (req, res) => {
+  res.send("Hola");
+});
+// Definir un puerto
+const PORT = process.env.PORT || 4000;
+// Arracar la app
+app.listen(PORT, () => {
+  console.log("El servidor se esta ejecutando en el puerto : " + PORT);
+});
