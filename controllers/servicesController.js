@@ -1,4 +1,5 @@
 import { services } from "../data/beautyServices.js";
+import Services from "../models/Services.js";
 
 const createService = async (req, res) => {
   if (Object.values(req.body).includes("")) {
@@ -6,6 +7,16 @@ const createService = async (req, res) => {
     return res.status(400).json({
       msg: error.message,
     });
+  }
+
+  try {
+    const service = new Services(req.body);
+    await service.save();
+    return res.json({
+      msg: "El servicio se creo correctamente",
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 
