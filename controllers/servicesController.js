@@ -62,4 +62,30 @@ const updateService = async (req, res) => {
   }
 };
 
-export { createService, getServices, getServiceById, updateService };
+const deleteService = async (req, res) => {
+  const { id } = req.params;
+  // Validar un objeto id
+  if (validateObjetcId(id, res)) return;
+  // Validar que exista
+  const service = await Services.findById(id);
+  if (!service) {
+    return handleNotFoundError("El Servicio no existe", res);
+  }
+
+  try {
+    await service.deleteOne();
+    res.json({
+      msg: "El servicio se eliminó correctamente.",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  createService,
+  getServices,
+  getServiceById,
+  updateService,
+  deleteService,
+};
