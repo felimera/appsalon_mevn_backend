@@ -1,10 +1,23 @@
 import express from "express";
-import { services } from "../data/beautyServices.js";
+import {
+  createService,
+  getServices,
+  getServiceById,
+  updateService,
+  deleteService,
+} from "../controllers/servicesController.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json(services);
-});
+router
+  .route("/")
+  .post(createService)
+  .get(getServices);
+
+router
+  .route("/:id")
+  .get(getServiceById)
+  .put(updateService)
+  .delete(deleteService);
 
 export default router;
