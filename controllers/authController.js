@@ -43,4 +43,23 @@ const register = async (req, res) => {
   }
 };
 
-export { register };
+const verifyAccount = async (req, res) => {
+  const { token } = req.params;
+  const user = await User.findOne({ token: token });
+  if (!user) {
+    const error = new Error("Hubo un error, token no válido");
+    return res.status(401).json({ msg: error.message });
+  }
+
+  // Si el token es válido, confirmar la cuenta
+  try {
+    user.verified = true;
+    user.token = "";
+    await user.save();
+    res.json({ msg: "Usuario confirmado correctamente." });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { register, verifyAccount };
