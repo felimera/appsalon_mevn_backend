@@ -88,8 +88,9 @@ const login = async (req, res) => {
   }
 };
 
-const user=(req,res)=>{
-console.log('desde user')
+const user = (req, res) => {
+  const { user } = req;
+  res.json(user);
 }
 
-export { register, verifyAccount, login ,user};
+export { register, verifyAccount, login, user };
