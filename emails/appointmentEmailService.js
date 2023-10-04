@@ -20,6 +20,7 @@ export async function sendEmailNewAppointment({ date, time }) {
 
     console.log("Mensaje enviado", info.messageId);
 }
+
 export async function sendEmailUpdateAppointment({ date, time }) {
     const transporter = createTransport(
         process.env.EMAIL_HOST,
@@ -40,7 +41,8 @@ export async function sendEmailUpdateAppointment({ date, time }) {
 
     console.log("Mensaje enviado", info.messageId);
 }
-export async function sendEmailDeleteAppointment({ date, time }) {
+
+export async function sendEmailCancelledAppointment({ date, time }) {
     const transporter = createTransport(
         process.env.EMAIL_HOST,
         process.env.EMAIL_PORT,
@@ -52,10 +54,10 @@ export async function sendEmailDeleteAppointment({ date, time }) {
     const info = await transporter.sendMail({
         from: "AppSalon <citas@appsalon.com>",
         to: 'admin@appsalon.com',
-        subject: "AppSalon - Cita Elimnada",
-        text: "AppSalon - Cita Elimnada",
-        html: `<p>Hola: Admin, un usuario a eliminada una cita.</p>
-        <p>La cita elimnada era el dia : ${date} a las ${time} horas.</p>`
+        subject: "AppSalon - Cita Cancelada",
+        text: "AppSalon - Cita Cancelada",
+        html: `<p>Hola: Admin, un usuario ha cancelado una cita.</p>
+        <p>La cita estaba programada para: ${date} a las ${time} horas.</p>`
     });
 
     console.log("Mensaje enviado", info.messageId);
