@@ -52,8 +52,38 @@ const getAppointmentById = async (req, res) => {
     res.json(appointment)
 }
 
+const updateAppointment = async (req, res) => {
+    const { id } = req.params;
+    // Validar por Object Id
+    if (validateObjetcId(id, res)) return
+
+    // Validar que exista la cita
+    const appointment = await Appointment.findById(id).populate('services');
+    if (!appointment) return handleNotFoundError('La Cita no Existe', res);
+
+    // Valiadar si es el mismo usuario
+    if (appointment.user.toString() !== req.user._id.toString()) {
+        const error = new Error('No tiene los permisos');
+        return res.status(403).json({ msg: error.message })
+    }
+
+    const { date, time, totalAmount, services } = req.body;
+    appointment.date = date;
+    appointment.time = time;
+    appointment.totalAmount = totalAmount;
+    appointment.services = services;
+
+    try {
+        const result = await appointment.save();
+        res.json({ msg: 'Cita Actualizada Correctamente' });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export {
     createAppointment,
     getAppointmentsByDate,
-    getAppointmentById
+    getAppointmentById,
+    updateAppointment
 }
