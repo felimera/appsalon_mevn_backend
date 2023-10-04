@@ -42,6 +42,12 @@ const getAppointmentById = async (req, res) => {
     const appointment = await Appointment.findById(id);
     if (!appointment) return handleNotFoundError('La Cita no Existe', res);
 
+    // Valiadar si es el mismo usuario
+    if (appointment.user.toString() !== req.user._id.toString()) {
+        const error = new Error('No tiene los permisos');
+        return res.status(403).json({ msg: error.message })
+    }
+
     // Retornar la cita
     res.json(appointment)
 }
