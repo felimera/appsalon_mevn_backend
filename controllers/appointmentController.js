@@ -39,7 +39,7 @@ const getAppointmentById = async (req, res) => {
     if (validateObjetcId(id, res)) return
 
     // Validar que exista la cita
-    const appointment = await Appointment.findById(id);
+    const appointment = await Appointment.findById(id).populate('services');
     if (!appointment) return handleNotFoundError('La Cita no Existe', res);
 
     // Valiadar si es el mismo usuario
