@@ -1,7 +1,7 @@
 import { parse, formatISO, startOfDay, endOfDay, isValid } from 'date-fns';
 import Appointment from '../models/Appointment.js';
 import { validateObjetcId, handleNotFoundError, formatDate } from "../utils/index.js";
-import { sendEmailNewAppointment } from '../emails/appointmentEmailService.js';
+import { sendEmailNewAppointment, sendEmailUpdateAppointment, sendEmailDeleteAppointment } from '../emails/appointmentEmailService.js';
 
 const createAppointment = async (req, res) => {
     const appointment = req.body;
@@ -82,6 +82,10 @@ const updateAppointment = async (req, res) => {
 
     try {
         const result = await appointment.save();
+        sendEmailUpdateAppointment({
+            date: formatDate(result.date),
+            time: result.time
+        });
         res.json({ msg: 'Cita Actualizada Correctamente' });
     } catch (error) {
         console.log(error)
