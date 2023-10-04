@@ -1,13 +1,20 @@
 import { parse, formatISO, startOfDay, endOfDay, isValid } from 'date-fns';
 import Appointment from '../models/Appointment.js';
 import { validateObjetcId, handleNotFoundError } from "../utils/index.js";
+import { sendEmailNewAppointment } from '../emails/appointmentEmailService.js';
 
 const createAppointment = async (req, res) => {
     const appointment = req.body;
     appointment.user = req.user._id.toString();
     try {
         const newAppointment = new Appointment(appointment);
-        await newAppointment.save();
+        const result = await newAppointment.save();
+
+        await sendEmailNewAppointment({
+            date: result.date,
+            time: result.time
+        });
+
         res.json({ msg: 'Tu Reservación se realizó Correctamente' });
     } catch (error) {
         console.log(error)
