@@ -4,7 +4,9 @@ import {
   verifyAccount,
   login,
   user,
-  forgotPassword
+  forgotPassword,
+  verifyPasswordResetToken,
+  updatePassword
 } from "../controllers/authController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -15,6 +17,10 @@ router.post("/register", register);
 router.get("/verify/:token", verifyAccount);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
+
+router.route("/forgot-password/:token")
+  .get(verifyPasswordResetToken)
+  .post(updatePassword);
 
 // Area privada - Requiere un JWT
 router.get('/user', authMiddleware, user);
