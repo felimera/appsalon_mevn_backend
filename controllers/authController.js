@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import { sendEmailVerification } from "../emails/authEmailService.js";
-import { generateJWT } from "../utils/index.js";
+import { generateJWT, uniquedId } from "../utils/index.js";
 
 const register = async (req, res) => {
   // Valida todos los campos
@@ -88,9 +88,35 @@ const login = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  // Revisar que el usuario exista
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    const error = new Error(`El Usuario NO existe`);
+    return res.status(404).json({ msg: error.message });
+  }
+
+  try {
+    user.token = uniquedId();
+    await user.save();
+
+    res.json({ msg: 'Hemos enviado un email con ls intrucciones' });
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
 const user = (req, res) => {
   const { user } = req;
   res.json(user);
 }
 
-export { register, verifyAccount, login, user };
+export {
+  register,
+  verifyAccount,
+  login,
+  forgotPassword,
+  user
+};
